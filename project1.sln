@@ -5,7 +5,7 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test_t001.3", "test_t001.3", "{0A146832-1AFD-472A-9899-76ED826CFAAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "http", "http\http.csproj", "{8618D926-BC9D-4C75-894C-A033E4775891}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "http", "http\http.csproj", "{8618D926-BC9D-4C75-894C-A033E4775891}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
