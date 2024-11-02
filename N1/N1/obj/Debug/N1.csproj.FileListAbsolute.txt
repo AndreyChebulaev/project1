@@ -1,0 +1,7 @@
+C:\Users\Машка\N1\N1\bin\Debug\N1.exe.config
+C:\Users\Машка\N1\N1\bin\Debug\N1.exe
+C:\Users\Машка\N1\N1\bin\Debug\N1.pdb
+C:\Users\Машка\N1\N1\obj\Debug\N1.csproj.AssemblyReference.cache
+C:\Users\Машка\N1\N1\obj\Debug\N1.csproj.CoreCompileInputs.cache
+C:\Users\Машка\N1\N1\obj\Debug\N1.exe
+C:\Users\Машка\N1\N1\obj\Debug\N1.pdb
