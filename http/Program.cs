@@ -8,7 +8,7 @@ class Program
 {
     static async Task Main(string[] args)
     {
-        string httpUrl = "http://alizar.habrahabr.ru/"; 
+        string httpUrl = "https://haveibeenpwned.com/api/v3/breaches"; 
         string ftpUrl = "ftp://ftp.ncbi.nlm.nih.gov/pub/README.ftp";    
         string savePathHttp = "update_http.txt";
         string savePathFtp = "update_ftp.txt";
