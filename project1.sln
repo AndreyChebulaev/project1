@@ -7,6 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test_t001.3", "test_t001.3"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "http", "http\http.csproj", "{8618D926-BC9D-4C75-894C-A033E4775891}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test t001", "test t001", "{62960B41-5781-4359-975F-7C800373AB2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test_t001", "test_t001\test_t001.csproj", "{52C9BB5D-D898-43FE-933E-6D8BD8424CCC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +21,17 @@ Global
 		{8618D926-BC9D-4C75-894C-A033E4775891}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8618D926-BC9D-4C75-894C-A033E4775891}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8618D926-BC9D-4C75-894C-A033E4775891}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52C9BB5D-D898-43FE-933E-6D8BD8424CCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52C9BB5D-D898-43FE-933E-6D8BD8424CCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52C9BB5D-D898-43FE-933E-6D8BD8424CCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52C9BB5D-D898-43FE-933E-6D8BD8424CCC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8618D926-BC9D-4C75-894C-A033E4775891} = {0A146832-1AFD-472A-9899-76ED826CFAAA}
+		{52C9BB5D-D898-43FE-933E-6D8BD8424CCC} = {62960B41-5781-4359-975F-7C800373AB2F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9027B7C5-9146-4994-86E4-691FC920A813}
