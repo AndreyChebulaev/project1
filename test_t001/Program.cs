@@ -12,7 +12,7 @@ class Program
     {
         string httpUrl = "https://haveibeenpwned.com/api/v3/breaches";
         string ftpUrl = "ftp://ftp.ncbi.nlm.nih.gov/pub/README.ftp";
-        string proxyUrl = "https://example.com/file.docx"; // URL для загрузки через прокси
+        string proxyUrl = "https://haveibeenpwned.com/api/v3/breaches"; // URL для загрузки через прокси
         string savePathHttp = "update_http.txt";
         string savePathFtp = "update_ftp.txt";
         string savePathProxyRus = "update_proxy_rus.txt";
@@ -24,8 +24,8 @@ class Program
         DownloadFileFtp(ftpUrl, savePathFtp);
 
         // Прокси-серверы для российских и иностранных IP-адресов
-        var russianProxy = new WebProxy("46.47.197.210:3128");
-        var foreignProxy = new WebProxy("83.68.136.236:80");
+        var russianProxy = new WebProxy("89.250.152.76");
+        var foreignProxy = new WebProxy("103.69.20.41");
 
         // Скачивание через прокси
         await DownloadFileWithProxy(proxyUrl, savePathProxyRus, russianProxy);
