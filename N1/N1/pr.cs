@@ -1,47 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Security.Cryptography;
-using System.Text;
 
 class Program
 {
     static void Main(string[] args)
     {
-        // Пользователь загружает файл обновления безопасности
-        Console.WriteLine("Введите путь к файлу обновления безопасности:");
-        string filePath = Console.ReadLine();
+        // Путь к файлу обновления безопасности
+        string filePath = "update.bin";
 
-        // Генерация эталонной контрольной суммы (это шаг может быть выполнен отдельно заранее)
-        GenerateChecksum(filePath);
-
-        // Проверка подлинности файла
-        VerifyUpdateFile(filePath);
-
-        // Ожидание нажатия клавиши перед закрытием консоли
-        Console.WriteLine("Нажмите любую клавишу для выхода...");
-        Console.ReadKey();
-    }
-
-    static void GenerateChecksum(string filePath)
-    {
-        // Проверка существования файла
-        if (!File.Exists(filePath))
-        {
-            Console.WriteLine("Файл не найден: " + filePath);
-            return;
-        }
-
-        // Получение контрольной суммы файла
-        string checksum = GetFileChecksum(filePath);
-        Console.WriteLine("Эталонная контрольная сумма файла (SHA256): " + checksum);
-
-        // Сохранение контрольной суммы в файл
-        File.WriteAllText("reference_checksum.txt", checksum);
-        Console.WriteLine("Эталонная контрольная сумма сохранена в reference_checksum.txt");
-    }
-
-    static void VerifyUpdateFile(string filePath)
-    {
         // Путь к файлу с эталонной контрольной суммой
         string checksumFilePath = "reference_checksum.txt";
 
@@ -71,6 +38,7 @@ class Program
         Console.WriteLine("Контрольная сумма действительна: " + isValid);
     }
 
+    // Метод для получения контрольной суммы файла (SHA256)
     static string GetFileChecksum(string filePath)
     {
         using (FileStream stream = File.OpenRead(filePath))
