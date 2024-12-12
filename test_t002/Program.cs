@@ -98,7 +98,7 @@ class SecurityUpdateVerifier
 	static void DecryptFile(string inputFile, string outputFile, string key)
 	{
 		byte[] keyBytes = Encoding.UTF8.GetBytes(key);
-		using (Aes aes = Aes.Create())
+		using (Aes aes = Aes.Create())	
 		{
 			byte[] iv = new byte[16];
 			Array.Copy(keyBytes, iv, Math.Min(keyBytes.Length, iv.Length));
