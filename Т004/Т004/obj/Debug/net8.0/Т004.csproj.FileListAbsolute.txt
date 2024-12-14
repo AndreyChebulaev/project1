@@ -1,0 +1,15 @@
+C:\Users\Машка\source\repos\Т004\Т004\bin\Debug\net8.0\Т004.exe
+C:\Users\Машка\source\repos\Т004\Т004\bin\Debug\net8.0\Т004.deps.json
+C:\Users\Машка\source\repos\Т004\Т004\bin\Debug\net8.0\Т004.runtimeconfig.json
+C:\Users\Машка\source\repos\Т004\Т004\bin\Debug\net8.0\Т004.dll
+C:\Users\Машка\source\repos\Т004\Т004\bin\Debug\net8.0\Т004.pdb
+C:\Users\Машка\source\repos\Т004\Т004\obj\Debug\net8.0\Т004.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Машка\source\repos\Т004\Т004\obj\Debug\net8.0\Т004.AssemblyInfoInputs.cache
+C:\Users\Машка\source\repos\Т004\Т004\obj\Debug\net8.0\Т004.AssemblyInfo.cs
+C:\Users\Машка\source\repos\Т004\Т004\obj\Debug\net8.0\Т004.csproj.CoreCompileInputs.cache
+C:\Users\Машка\source\repos\Т004\Т004\obj\Debug\net8.0\Т004.sourcelink.json
+C:\Users\Машка\source\repos\Т004\Т004\obj\Debug\net8.0\Т004.dll
+C:\Users\Машка\source\repos\Т004\Т004\obj\Debug\net8.0\refint\Т004.dll
+C:\Users\Машка\source\repos\Т004\Т004\obj\Debug\net8.0\Т004.pdb
+C:\Users\Машка\source\repos\Т004\Т004\obj\Debug\net8.0\Т004.genruntimeconfig.cache
+C:\Users\Машка\source\repos\Т004\Т004\obj\Debug\net8.0\ref\Т004.dll
