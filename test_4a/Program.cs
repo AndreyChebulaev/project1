@@ -10,51 +10,72 @@ namespace SecurityAnalyzer
 	{
 		static void Main(string[] args)
 		{
-			Console.WriteLine("Security Update Analyzer");
+			Console.WriteLine("Анализатор обновлений безопасности (Тест T004)");
 
-			// Путь к обновлению безопасности
-			Console.Write("Enter path to the update file: ");
+			// Путь к файлу обновления безопасности
+			Console.Write("Введите путь к файлу обновления: ");
 			string updateFilePath = Console.ReadLine();
 
 			if (!File.Exists(updateFilePath))
 			{
-				Console.WriteLine("File not found.");
+				Console.WriteLine("Файл не найден. Пожалуйста, проверьте путь и попробуйте снова.");
 				return;
 			}
 
-			// Загрузка индикаторов компрометации (IoC)
-			var iocs = LoadIoCs("ioc_list.txt");
+			string logFilePath = "analysis_results.txt";
+			using (StreamWriter logFile = new StreamWriter(logFilePath, false))
+			{
+				logFile.WriteLine("Результаты анализа безопасности (Тест T004)");
+				logFile.WriteLine($"Анализируемый файл: {updateFilePath}\n");
 
-			// Проверка на IoC
-			bool hasIoCs = AnalyzeForIoCs(updateFilePath, iocs);
-			if (hasIoCs)
-			{
-				Console.WriteLine("Potential IoCs found in the update file.");
-			}
-			else
-			{
-				Console.WriteLine("No IoCs detected in the update file.");
-			}
+				// Загрузка индикаторов компрометации (IoC)
+				var iocs = LoadIoCs("ioc_list.txt");
 
-			// Проверка с использованием YARA-правил
-			bool hasYaraMatches = AnalyzeWithYara(updateFilePath);
-			if (hasYaraMatches)
-			{
-				Console.WriteLine("Potential YARA rule matches found.");
-			}
-			else
-			{
-				Console.WriteLine("No YARA rule matches detected.");
+				// Анализ на наличие IoC
+				bool hasIoCs = AnalyzeForIoCs(updateFilePath, iocs, logFile);
+				if (hasIoCs)
+				{
+					logFile.WriteLine("В файле обновления найдены возможные индикаторы компрометации (IoC).\n");
+				}
+				else
+				{
+					logFile.WriteLine("Индикаторы компрометации (IoC) не обнаружены в файле обновления.\n");
+				}
+
+				// Анализ с использованием YARA-правил
+				bool hasYaraMatches = AnalyzeWithYara(updateFilePath, logFile);
+				if (hasYaraMatches)
+				{
+					logFile.WriteLine("Обнаружены возможные совпадения с YARA-правилами.\n");
+				}
+				else
+				{
+					logFile.WriteLine("Совпадений с YARA-правилами не обнаружено.\n");
+				}
+
+				// Контекстный поиск запрещенной информации
+				bool hasForbiddenKeywords = AnalyzeForKeywords(updateFilePath, logFile);
+				if (hasForbiddenKeywords)
+				{
+					logFile.WriteLine("В файле обновления найдены запрещенные ключевые слова.\n");
+				}
+				else
+				{
+					logFile.WriteLine("Запрещенные ключевые слова не обнаружены в файле обновления.\n");
+				}
+
+				Console.WriteLine($"Результаты анализа сохранены в файл: {logFilePath}");
 			}
 		}
 
+		// Метод для загрузки индикаторов компрометации (IoC) из файла
 		static List<string> LoadIoCs(string iocFilePath)
 		{
 			var iocs = new List<string>();
 
 			if (!File.Exists(iocFilePath))
 			{
-				Console.WriteLine("IoC file not found. Continuing without IoCs.");
+				Console.WriteLine("Файл с IoC не найден. Продолжаем без проверки на IoC.");
 				return iocs;
 			}
 
@@ -73,7 +94,8 @@ namespace SecurityAnalyzer
 			return iocs;
 		}
 
-		static bool AnalyzeForIoCs(string filePath, List<string> iocs)
+		// Метод для проверки файла на наличие индикаторов компрометации (IoC)
+		static bool AnalyzeForIoCs(string filePath, List<string> iocs, StreamWriter logFile)
 		{
 			string fileContent = File.ReadAllText(filePath);
 
@@ -81,7 +103,7 @@ namespace SecurityAnalyzer
 			{
 				if (Regex.IsMatch(fileContent, ioc, RegexOptions.IgnoreCase))
 				{
-					Console.WriteLine($"IoC detected: {ioc}");
+					logFile.WriteLine($"Обнаружен IoC: {ioc}");
 					return true;
 				}
 			}
@@ -89,16 +111,17 @@ namespace SecurityAnalyzer
 			return false;
 		}
 
-		static bool AnalyzeWithYara(string filePath)
+		// Метод для анализа файла с использованием YARA-правил
+		static bool AnalyzeWithYara(string filePath, StreamWriter logFile)
 		{
 			try
 			{
-				string yaraExecutable = "yara"; // YARA CLI executable
-				string yaraRulesFile = "rules.yar"; // YARA rules file
+				string yaraExecutable = "yara"; // Исполняемый файл YARA CLI
+				string yaraRulesFile = "rules.yar"; // Файл с YARA-правилами
 
 				if (!File.Exists(yaraRulesFile))
 				{
-					Console.WriteLine("YARA rules file not found.");
+					logFile.WriteLine("Файл с YARA-правилами не найден.");
 					return false;
 				}
 
@@ -121,22 +144,44 @@ namespace SecurityAnalyzer
 
 					if (!string.IsNullOrEmpty(output))
 					{
-						Console.WriteLine("YARA output:\n" + output);
+						logFile.WriteLine("Результат YARA:");
+						logFile.WriteLine(output);
 						return true;
 					}
 
 					if (!string.IsNullOrEmpty(error))
 					{
-						Console.WriteLine("YARA error:\n" + error);
+						logFile.WriteLine("Ошибка YARA:");
+						logFile.WriteLine(error);
 					}
 				}
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine($"Error running YARA: {ex.Message}");
+				logFile.WriteLine($"Исключение при выполнении YARA: {ex.Message}");
 			}
 
 			return false;
+		}
+
+		// Метод для поиска запрещенных ключевых слов в файле
+		static bool AnalyzeForKeywords(string filePath, StreamWriter logFile)
+		{
+			string fileContent = File.ReadAllText(filePath);
+			string[] keywords = { "политика", "баннер", "лозунг", "противоправный" };
+			bool keywordFound = false;
+
+			foreach (var keyword in keywords)
+			{
+				MatchCollection matches = Regex.Matches(fileContent, keyword, RegexOptions.IgnoreCase);
+				if (matches.Count > 0)
+				{
+					logFile.WriteLine($"Обнаружено запрещенное ключевое слово: {keyword}");
+					keywordFound = true;
+				}
+			}
+
+			return keywordFound;
 		}
 	}
 }
