@@ -145,7 +145,7 @@ namespace SecurityAnalyzer
 					if (!string.IsNullOrEmpty(output))
 					{
 						logFile.WriteLine("Результат YARA:");
-						logFile.WriteLine(output);
+						logFile.WriteLine(output);	
 						return true;
 					}
 
