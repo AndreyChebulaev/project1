@@ -1,97 +1,58 @@
-﻿using System;
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
+using System.Net.Http;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
-public class SecurityUpdateService
+[ApiController]
+[Route("api/security-updates")]
+public class SecurityUpdateController : ControllerBase
 {
-	public async Task<string> ProcessUpdatesAsync()
+	private readonly HttpClient _httpClient;
+
+	public SecurityUpdateController(HttpClient httpClient)
 	{
-		string httpUrl = "https://haveibeenpwned.com/api/v3/breaches";
-		string ftpUrl = "ftp://ftp.ncbi.nlm.nih.gov/pub/README.ftp";
-		string proxyUrl = "https://haveibeenpwned.com/api/v3/breaches";
-
-		string savePathHttp = Path.GetTempFileName();
-		string savePathFtp = Path.GetTempFileName();
-		string savePathProxyRus = Path.GetTempFileName();
-		string savePathProxyEng = Path.GetTempFileName();
-
-		await DownloadFileHttpAsync(httpUrl, savePathHttp);
-		DownloadFileFtp(ftpUrl, savePathFtp);
-
-		var russianProxy = new WebProxy("89.250.152.76");
-		var foreignProxy = new WebProxy("103.69.20.41");
-
-		await DownloadFileWithProxy(proxyUrl, savePathProxyRus, russianProxy);
-		await DownloadFileWithProxy(proxyUrl, savePathProxyEng, foreignProxy);
-
-		string[] filePaths = { savePathHttp, savePathFtp, savePathProxyRus, savePathProxyEng };
-		StringBuilder report = new StringBuilder();
-
-		foreach (string filePath in filePaths)
-		{
-			string checksum = CalculateChecksum(filePath);
-			report.AppendLine($"{filePath}: {checksum}");
-		}
-
-		return report.ToString();
+		_httpClient = httpClient;
 	}
 
-	private static string CalculateChecksum(string filePath)
+	[HttpPost("download-and-compare")]
+	public async Task<IActionResult> DownloadAndCompare([FromBody] UpdateRequest request)
 	{
-		using (SHA256 sha256 = SHA256.Create())
-		using (FileStream fs = File.OpenRead(filePath))
+		if (request.Urls == null || request.Urls.Length < 2)
+			return BadRequest("Необходимо предоставить минимум два URL для сравнения.");
+
+		var checksums = new Dictionary<string, string>();
+
+		foreach (var url in request.Urls)
 		{
-			byte[] hashBytes = sha256.ComputeHash(fs);
-			StringBuilder sb = new StringBuilder();
-			foreach (byte b in hashBytes)
+			try
 			{
-				sb.Append(b.ToString("x2"));
+				var data = await _httpClient.GetByteArrayAsync(url);
+				var checksum = ComputeSHA256(data);
+				checksums[url] = checksum;
 			}
-			return sb.ToString();
-		}
-	}
-
-	private static async Task DownloadFileHttpAsync(string url, string savePath)
-	{
-		using (HttpClient client = new HttpClient())
-		{
-			HttpResponseMessage response = await client.GetAsync(url);
-			response.EnsureSuccessStatusCode();
-			string content = await response.Content.ReadAsStringAsync();
-			await File.WriteAllTextAsync(savePath, content);
-		}
-	}
-
-	private static void DownloadFileFtp(string url, string savePath)
-	{
-		FtpWebRequest request = (FtpWebRequest)WebRequest.Create(url);
-		request.Method = WebRequestMethods.Ftp.DownloadFile;
-
-		using (FtpWebResponse response = (FtpWebResponse)request.GetResponse())
-		using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-		using (StreamWriter writer = new StreamWriter(savePath))
-		{
-			writer.Write(reader.ReadToEnd());
-		}
-	}
-
-	private static async Task DownloadFileWithProxy(string url, string filePath, IWebProxy proxy)
-	{
-		var httpClientHandler = new HttpClientHandler { Proxy = proxy, UseProxy = true };
-
-		using (var httpClient = new HttpClient(httpClientHandler))
-		{
-			var response = await httpClient.GetAsync(url);
-			response.EnsureSuccessStatusCode();
-
-			using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
+			catch (Exception ex)
 			{
-				await response.Content.CopyToAsync(fileStream);
+				return BadRequest($"Ошибка при загрузке {url}: {ex.Message}");
 			}
 		}
+
+		var allEqual = checksums.Values.Distinct().Count() == 1;
+		return Ok(new { Checksums = checksums, Identical = allEqual });
 	}
+
+	private string ComputeSHA256(byte[] data)
+	{
+		using (var sha256 = SHA256.Create())
+		{
+			var hash = sha256.ComputeHash(data);
+			return BitConverter.ToString(hash).Replace("-", "").ToLower();
+		}
+	}
+}
+
+public class UpdateRequest
+{
+	public string[] Urls { get; set; }
 }
