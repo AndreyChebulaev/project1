@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿/*
+using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
@@ -56,3 +57,4 @@ public class UpdateRequest
 {
 	public string[] Urls { get; set; }
 }
+*/

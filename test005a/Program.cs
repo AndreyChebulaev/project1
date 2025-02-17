@@ -1,70 +1,37 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Text.Json;
+using System.Collections.Generic;
 
-class SyscallAnalyzer
+class SyscallMonitor
 {
-	static void Main(string[] args)
+	static List<string> eventLog = new List<string>();
+
+	static void Main()
 	{
-		string logFilePath = "syscall_log.txt";
-		RunProcessAndAnalyze("updated_software.exe", logFilePath);
-		AnalyzeLog(logFilePath);
+		Console.WriteLine("[+] Запуск мониторинга системных вызовов...");
+		MonitorSystemCalls();
 	}
 
-	static void RunProcessAndAnalyze(string executable, string logFilePath)
+	static void MonitorSystemCalls()
 	{
-		try
-		{
-			ProcessStartInfo startInfo = new ProcessStartInfo
-			{
-				FileName = executable,
-				RedirectStandardOutput = true,
-				RedirectStandardError = true,
-				UseShellExecute = false,
-				CreateNoWindow = true
-			};
+		Process[] processes = Process.GetProcesses();
 
-			using (Process process = new Process { StartInfo = startInfo })
-			{
-				process.OutputDataReceived += (sender, e) => LogData(logFilePath, e.Data);
-				process.ErrorDataReceived += (sender, e) => LogData(logFilePath, e.Data);
-
-				process.Start();
-				process.BeginOutputReadLine();
-				process.BeginErrorReadLine();
-				process.WaitForExit();
-			}
-		}
-		catch (Exception ex)
+		foreach (var process in processes)
 		{
-			Console.WriteLine($"Ошибка при запуске процесса: {ex.Message}");
+			string logEntry = $"{DateTime.Now}: Запущен процесс {process.ProcessName} (PID: {process.Id})";
+			Console.WriteLine(logEntry);
+			eventLog.Add(logEntry);
 		}
+
+		SaveReport();
 	}
 
-	static void LogData(string filePath, string? data)
+	static void SaveReport()
 	{
-		if (!string.IsNullOrEmpty(data))
-		{
-			File.AppendAllText(filePath, data + Environment.NewLine);
-		}
-	}
-
-	static void AnalyzeLog(string logFilePath)
-	{
-		if (!File.Exists(logFilePath))
-		{
-			Console.WriteLine("Файл логов отсутствует.");
-			return;
-		}
-
-		string[] logLines = File.ReadAllLines(logFilePath);
-		foreach (string line in logLines)
-		{
-			if (line.Contains("error", StringComparison.OrdinalIgnoreCase))
-			{
-				Console.WriteLine($"Обнаружена ошибка: {line}");
-			}
-		}
+		string reportPath = "syscall_report.json";
+		File.WriteAllText(reportPath, JsonSerializer.Serialize(eventLog, new JsonSerializerOptions { WriteIndented = true }));
+		Console.WriteLine($"[+] Отчет сохранен: {reportPath}");
 	}
 }
-
