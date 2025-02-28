@@ -5,3 +5,10 @@ C:\Users\Машка\source\repos\test005-V\test005-V\obj\Debug\test005-V.csproj.
 C:\Users\Машка\source\repos\test005-V\test005-V\obj\Debug\test005-V.csproj.CoreCompileInputs.cache
 C:\Users\Машка\source\repos\test005-V\test005-V\obj\Debug\test005-V.exe
 C:\Users\Машка\source\repos\test005-V\test005-V\obj\Debug\test005-V.pdb
+C:\Users\Andrey\source\repos\project1\Т005\test005-V\test005-V\bin\Debug\test005-V.exe.config
+C:\Users\Andrey\source\repos\project1\Т005\test005-V\test005-V\bin\Debug\test005-V.exe
+C:\Users\Andrey\source\repos\project1\Т005\test005-V\test005-V\bin\Debug\test005-V.pdb
+C:\Users\Andrey\source\repos\project1\Т005\test005-V\test005-V\obj\Debug\test005-V.csproj.AssemblyReference.cache
+C:\Users\Andrey\source\repos\project1\Т005\test005-V\test005-V\obj\Debug\test005-V.csproj.CoreCompileInputs.cache
+C:\Users\Andrey\source\repos\project1\Т005\test005-V\test005-V\obj\Debug\test005-V.exe
+C:\Users\Andrey\source\repos\project1\Т005\test005-V\test005-V\obj\Debug\test005-V.pdb
