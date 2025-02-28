@@ -1,0 +1,7 @@
+C:\Users\Машка\source\repos\test005-V\test005-V\bin\Debug\test005-V.exe.config
+C:\Users\Машка\source\repos\test005-V\test005-V\bin\Debug\test005-V.exe
+C:\Users\Машка\source\repos\test005-V\test005-V\bin\Debug\test005-V.pdb
+C:\Users\Машка\source\repos\test005-V\test005-V\obj\Debug\test005-V.csproj.AssemblyReference.cache
+C:\Users\Машка\source\repos\test005-V\test005-V\obj\Debug\test005-V.csproj.CoreCompileInputs.cache
+C:\Users\Машка\source\repos\test005-V\test005-V\obj\Debug\test005-V.exe
+C:\Users\Машка\source\repos\test005-V\test005-V\obj\Debug\test005-V.pdb
