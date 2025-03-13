@@ -41,7 +41,7 @@ class SecurityUpdateVerifier
 		}
 	}
 
-	// Метод для проверки целостности файла обновления безопасности
+	// Метод для проверки целостности файла обновления безопасности.
 	public static (string referenceChecksum, string currentChecksum, bool isValid, string resultsFilePath) VerifyUpdateFile(string filePath, string resultsFilePath)
 	{
 		if (!File.Exists(filePath))
