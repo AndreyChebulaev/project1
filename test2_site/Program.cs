@@ -5,6 +5,11 @@ using System.Text;
 
 class SecurityUpdateVerifier
 {
+	static void Main()
+	{
+		Console.WriteLine("Security Update Verifier initialized.");
+	}
+
 	// Метод для расшифровки файла с использованием ключа
 	public static bool DecryptFile(string inputFile, string outputFile, string key)
 	{
@@ -32,7 +37,7 @@ class SecurityUpdateVerifier
 		}
 		catch
 		{
-			return false; // Ошибка при расшифровке.
+			return false; // Ошибка при расшифровке
 		}
 	}
 
