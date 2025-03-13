@@ -32,7 +32,7 @@ class SecurityUpdateVerifier
 		}
 		catch
 		{
-			return false; // Ошибка при расшифровке
+			return false; // Ошибка при расшифровке.
 		}
 	}
 
